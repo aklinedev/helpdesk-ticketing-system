@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
 import com.anthonyk.Helpdesk.model.Ticket;
 import com.anthonyk.Helpdesk.model.TicketPriority;
@@ -36,30 +37,59 @@ public class TicketService {
     // Update Ticket -----------------------------------------------
 
 
-    public Ticket updateTicketTitle(long id, String title) {
+    public Ticket updateTicket(
+        long id,
+        String title,
+        String description,
+        TicketPriority ticketPriority,
+        TicketStatus ticketStatus
+    ) {
+
+        if (title == null
+            && description == null
+            && ticketPriority == null
+            && ticketStatus == null) {
+
+            throw new InvalidTicketUpdateException(
+                "At least one field must be provided"
+            );
+        }
+
         Ticket ticket = getTicketOrThrow(id);
-        ticket.setTitle(title);
+
+        if (title != null) {
+            if (title.isBlank()) {
+                throw new InvalidTicketUpdateException(
+                    "Title must not be blank"
+                );
+            }
+
+            title = title.trim();
+            ticket.setTitle(title);
+        }
+
+        if (description != null) {
+            if (description.isBlank()) {
+                throw new InvalidTicketUpdateException(
+                    "Description must not be blank"
+                );
+            }
+
+            description = description.trim();
+            ticket.setDescription(description);
+        }
+
+        if (ticketPriority != null) {
+            ticket.setTicketPriority(ticketPriority);
+        }
+
+        if (ticketStatus != null) {
+            ticket.setTicketStatus(ticketStatus);
+        }
+
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicketDescription(long id, String description) {
-        Ticket ticket = getTicketOrThrow(id);
-        ticket.setDescription(description);
-        return ticketRepository.save(ticket);
-    }
-
-    public Ticket updateTicketPriority(long id, TicketPriority ticketPriority) {
-        Ticket ticket = getTicketOrThrow(id);
-        ticket.setTicketPriority(ticketPriority);
-        return ticketRepository.save(ticket);
-    }
-
-    public Ticket updateTicketStatus(long id, TicketStatus ticketStatus) {
-        Ticket ticket = getTicketOrThrow(id);
-        ticket.setTicketStatus(ticketStatus);
-        return ticketRepository.save(ticket);
-    }
-    
     // Delete Ticket -----------------------------------------------
 
     public void deleteTicketById(long id) {
