@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 
 public record CreateTicketRequestDTO(
 
-    @NotBlank String title,
-    @NotBlank String description,
-    @NotNull TicketPriority ticketPriority
+    @NotBlank(message = "Title must not be blank") String title,
+    @NotBlank(message = "Ticket description is required") String description,
+    @NotNull(message = "Ticket priority is required") TicketPriority ticketPriority
 
 ){}
