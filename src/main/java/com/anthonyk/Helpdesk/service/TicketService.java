@@ -11,7 +11,7 @@ import com.anthonyk.Helpdesk.model.TicketPriority;
 import com.anthonyk.Helpdesk.model.TicketStatus;
 import com.anthonyk.Helpdesk.repository.TicketRepository;
 
-@Service 
+@Service
 public class TicketService {
 
     private final TicketRepository ticketRepository;
@@ -20,12 +20,11 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
-
     // Helpers -----------------------------------------------
 
-    private Ticket getTicketOrThrow(long id){ 
+    private Ticket getTicketOrThrow(long id) {
         return ticketRepository.findById(id)
-            .orElseThrow(() -> new TicketNotFoundException("Ticket Not Found") );
+                .orElseThrow(() -> new TicketNotFoundException("Ticket Not Found"));
     }
     // Create Ticket -----------------------------------------------
 
@@ -36,23 +35,20 @@ public class TicketService {
 
     // Update Ticket -----------------------------------------------
 
-
     public Ticket updateTicket(
-        long id,
-        String title,
-        String description,
-        TicketPriority ticketPriority,
-        TicketStatus ticketStatus
-    ) {
+            long id,
+            String title,
+            String description,
+            TicketPriority ticketPriority,
+            TicketStatus ticketStatus) {
 
         if (title == null
-            && description == null
-            && ticketPriority == null
-            && ticketStatus == null) {
+                && description == null
+                && ticketPriority == null
+                && ticketStatus == null) {
 
             throw new InvalidTicketUpdateException(
-                "At least one field must be provided"
-            );
+                    "At least one field must be provided");
         }
 
         Ticket ticket = getTicketOrThrow(id);
@@ -60,8 +56,7 @@ public class TicketService {
         if (title != null) {
             if (title.isBlank()) {
                 throw new InvalidTicketUpdateException(
-                    "Title must not be blank"
-                );
+                        "Title must not be blank");
             }
 
             title = title.trim();
@@ -71,8 +66,7 @@ public class TicketService {
         if (description != null) {
             if (description.isBlank()) {
                 throw new InvalidTicketUpdateException(
-                    "Description must not be blank"
-                );
+                        "Description must not be blank");
             }
 
             description = description.trim();

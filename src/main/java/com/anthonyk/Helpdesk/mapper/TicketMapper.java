@@ -7,15 +7,12 @@ public class TicketMapper {
 
     public static TicketResponseDTO mapToResponseDTO(Ticket ticket) {
         return new TicketResponseDTO(
-            ticket.getId(),
-            ticket.getTitle(),
-            ticket.getDescription(),
-            ticket.getTicketPriority(),
-            ticket.getTicketStatus(),
-            ticket.getCreatedAt()
-        );
+                ticket.getId(),
+                ticket.getTitle(),
+                ticket.getDescription(),
+                ticket.getTicketPriority(),
+                ticket.getTicketStatus(),
+                ticket.getCreatedAt());
     }
 
-    
-    
 }

@@ -8,40 +8,46 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice 
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-     // Handle specific exception's
+    // Handle specific exception's
 
     @ExceptionHandler(InvalidTicketUpdateException.class)
-    public ResponseEntity<ErrorResponse> handleTicketUpdateException(InvalidTicketUpdateException invalidTicketUpdateException) {
+    public ResponseEntity<ErrorResponse> handleTicketUpdateException(
+            InvalidTicketUpdateException invalidTicketUpdateException) {
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.BAD_REQUEST.value(),
-            invalidTicketUpdateException.getMessage());
-        
-        return new ResponseEntity<> (errorResponse, HttpStatus.BAD_REQUEST);
+                HttpStatus.BAD_REQUEST.value(),
+                invalidTicketUpdateException.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TicketNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleTicketNotFoundException(TicketNotFoundException ticketNotFoundException) {
+    public ResponseEntity<ErrorResponse> handleTicketNotFoundException(
+            TicketNotFoundException ticketNotFoundException) {
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.NOT_FOUND.value(),
-            ticketNotFoundException.getMessage());
+                HttpStatus.NOT_FOUND.value(),
+                ticketNotFoundException.getMessage());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException methodArgumentNotValidException) {
-       
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException methodArgumentNotValidException) {
+
         FieldError fieldError = methodArgumentNotValidException.getFieldError();
         String message;
-        if (fieldError == null) { message = "Validation failed"; }
-        else { message = fieldError.getDefaultMessage(); }
-        
+        if (fieldError == null) {
+            message = "Validation failed";
+        } else {
+            message = fieldError.getDefaultMessage();
+        }
+
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.BAD_REQUEST.value(),
-            message);
+                HttpStatus.BAD_REQUEST.value(),
+                message);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -49,8 +55,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleInvalidInput() {
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.BAD_REQUEST.value(),
-            "Request contains invalid or malformed data");
+                HttpStatus.BAD_REQUEST.value(),
+                "Request contains invalid or malformed data");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
@@ -60,13 +66,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException() {
         ErrorResponse errorResponse = new ErrorResponse(
-            HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            "An unexpected error occurred");
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "An unexpected error occurred");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    } 
-    
-
+    }
 
     public static class ErrorResponse {
         private int status;
@@ -77,8 +81,13 @@ public class GlobalExceptionHandler {
             this.message = message;
         }
 
-        public int getStatus() { return status; }
-        public String getMessage() { return message; }
+        public int getStatus() {
+            return status;
+        }
+
+        public String getMessage() {
+            return message;
+        }
     }
 
 }

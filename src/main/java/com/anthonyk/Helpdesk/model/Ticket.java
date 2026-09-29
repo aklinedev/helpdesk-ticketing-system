@@ -4,12 +4,11 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
-
-@Entity 
+@Entity
 @Table(name = "tickets")
 public class Ticket {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,7 +29,7 @@ public class Ticket {
     @Column(nullable = false)
     private TicketStatus ticketStatus;
 
-    protected Ticket(){
+    protected Ticket() {
     }
 
     public Ticket(String title, String description, TicketPriority ticketPriority) {

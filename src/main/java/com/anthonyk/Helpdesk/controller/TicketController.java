@@ -25,29 +25,30 @@ import com.anthonyk.Helpdesk.service.TicketService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/tickets") 
+@RequestMapping("/api/tickets")
 public class TicketController {
 
-    
     private final TicketService ticketService;
 
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
     }
+
     @PostMapping
-        public ResponseEntity<TicketResponseDTO> createTicket(@Valid @RequestBody CreateTicketRequestDTO createTicketRequestDTO) {
-            Ticket createdTicket = ticketService.createTicket(createTicketRequestDTO.title(),
-                                        createTicketRequestDTO.description(), 
-                                        createTicketRequestDTO.ticketPriority());
-            return new ResponseEntity<> (TicketMapper.mapToResponseDTO(createdTicket), HttpStatus.CREATED);
-        }
+    public ResponseEntity<TicketResponseDTO> createTicket(
+            @Valid @RequestBody CreateTicketRequestDTO createTicketRequestDTO) {
+        Ticket createdTicket = ticketService.createTicket(createTicketRequestDTO.title(),
+                createTicketRequestDTO.description(),
+                createTicketRequestDTO.ticketPriority());
+        return new ResponseEntity<>(TicketMapper.mapToResponseDTO(createdTicket), HttpStatus.CREATED);
+    }
 
     @GetMapping
     public List<TicketResponseDTO> getAllTickets() {
         List<Ticket> allTickets = ticketService.getAllTickets();
 
         List<TicketResponseDTO> ticketResponseDTOs = allTickets.stream()
-            .map(TicketMapper::mapToResponseDTO)
+                .map(TicketMapper::mapToResponseDTO)
                 .toList();
 
         return ticketResponseDTOs;
@@ -60,7 +61,8 @@ public class TicketController {
     }
 
     @PatchMapping("/{id}")
-    public TicketResponseDTO updateTicket(@PathVariable long id, @Valid @RequestBody UpdateTicketRequestDTO updateTicketRequestDTO) {
+    public TicketResponseDTO updateTicket(@PathVariable long id,
+            @Valid @RequestBody UpdateTicketRequestDTO updateTicketRequestDTO) {
 
         String title = updateTicketRequestDTO.title();
         String description = updateTicketRequestDTO.description();
@@ -78,6 +80,5 @@ public class TicketController {
         ticketService.deleteTicketById(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }
