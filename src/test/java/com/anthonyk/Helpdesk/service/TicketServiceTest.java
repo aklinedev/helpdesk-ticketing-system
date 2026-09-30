@@ -7,8 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +78,7 @@ public class TicketServiceTest {
                 () -> {
                     ticketService.getTicketById(id);
                 });
-        verify(ticketRepository, never()).findById(any());
+        verify(ticketRepository, times(1)).findById(any());
 
     }
 
@@ -109,20 +111,20 @@ public class TicketServiceTest {
                     ticketService.updateTicket(id, null, null, null, null);
                 });
 
-        verify(ticketRepository, never()).save(any());
+        verifyNoInteractions(ticketRepository);
     }
 
     @Test
     void updateTicket_shouldRejectBlankTitle() {
 
         Long id = 1L;
-        String invalid_title = "    ";
+        String invalidTitle = "    ";
         Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
         when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
 
         assertThrows(InvalidTicketUpdateException.class,
                 () -> {
-                    ticketService.updateTicket(id, invalid_title, null, null, null);
+                    ticketService.updateTicket(id, invalidTitle, null, null, null);
                 });
         verify(ticketRepository, never()).save(any());
     }
@@ -131,13 +133,13 @@ public class TicketServiceTest {
     void updateTicket_shouldRejectBlankDescription() {
 
         Long id = 1L;
-        String invalid_description = "    ";
+        String invalidDescription = "    ";
         Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
         when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
 
         assertThrows(InvalidTicketUpdateException.class,
                 () -> {
-                    ticketService.updateTicket(id, null, invalid_description, null, null);
+                    ticketService.updateTicket(id, null, invalidDescription, null, null);
                 });
         verify(ticketRepository, never()).save(any());
     }

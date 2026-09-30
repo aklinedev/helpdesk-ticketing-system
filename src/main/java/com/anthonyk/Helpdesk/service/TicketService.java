@@ -54,23 +54,11 @@ public class TicketService {
         Ticket ticket = getTicketOrThrow(id);
 
         if (title != null) {
-            if (title.isBlank()) {
-                throw new InvalidTicketUpdateException(
-                        "Title must not be blank");
-            }
-
-            title = title.trim();
-            ticket.setTitle(title);
+            ticket.setTitle(title.trim());
         }
 
         if (description != null) {
-            if (description.isBlank()) {
-                throw new InvalidTicketUpdateException(
-                        "Description must not be blank");
-            }
-
-            description = description.trim();
-            ticket.setDescription(description);
+            ticket.setDescription(description.trim());
         }
 
         if (ticketPriority != null) {
