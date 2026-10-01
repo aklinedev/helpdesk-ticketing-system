@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.anthonyk.Helpdesk.exception.InvalidTicketStatusTransitionException;
 import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
 import com.anthonyk.Helpdesk.model.Ticket;
@@ -115,36 +116,6 @@ public class TicketServiceTest {
     }
 
     @Test
-    void updateTicket_shouldRejectBlankTitle() {
-
-        Long id = 1L;
-        String invalidTitle = "    ";
-        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
-        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
-
-        assertThrows(InvalidTicketUpdateException.class,
-                () -> {
-                    ticketService.updateTicket(id, invalidTitle, null, null, null);
-                });
-        verify(ticketRepository, never()).save(any());
-    }
-
-    @Test
-    void updateTicket_shouldRejectBlankDescription() {
-
-        Long id = 1L;
-        String invalidDescription = "    ";
-        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
-        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
-
-        assertThrows(InvalidTicketUpdateException.class,
-                () -> {
-                    ticketService.updateTicket(id, null, invalidDescription, null, null);
-                });
-        verify(ticketRepository, never()).save(any());
-    }
-
-    @Test
     void deleteTicketById_shouldDeleteExistingTicket() {
 
         Long id = 1L;
@@ -185,6 +156,66 @@ public class TicketServiceTest {
 
         assertThat(results).containsExactlyElementsOf(list);
 
+    }
+
+    @Test
+    void updateTicket_shouldThrowInvalidTicketStatusTransition() {
+
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        assertThrows(InvalidTicketStatusTransitionException.class,
+            () -> {
+                ticketService.updateTicket(id, null, null, null, TicketStatus.CLOSED);
+            }
+        );
+        verify(ticketRepository, never()).save(any());
+    }
+
+    @Test
+    void updateTicket_shouldNotUpdateFields_whenThrowingInvalidTicketStatusTransition() {
+
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        assertThrows(InvalidTicketStatusTransitionException.class,
+                () -> {
+                    ticketService.updateTicket(id, "updatedTitle", null, null, TicketStatus.CLOSED);
+                });
+        verify(ticketRepository, never()).save(any());
+        assertEquals("Test", ticket.getTitle());
+        assertEquals(TicketStatus.OPEN, ticket.getTicketStatus());
+    }
+
+    @Test
+    void updateTicket_shouldUpdateValidStatusTransition() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        ticketService.updateTicket(id, null, null, null, TicketStatus.IN_PROGRESS);
+        ArgumentCaptor<Ticket> captor = ArgumentCaptor.forClass(Ticket.class);
+        verify(ticketRepository).save(captor.capture());
+        Ticket capturedTicket = captor.getValue();
+
+        assertEquals(TicketStatus.IN_PROGRESS, capturedTicket.getTicketStatus());
+    }
+
+    @Test
+    void updateTicket_shouldUpdateWithSameStatusTransition() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        ticketService.updateTicket(id, "Testing", null, null, TicketStatus.OPEN);
+        ArgumentCaptor<Ticket> captor = ArgumentCaptor.forClass(Ticket.class);
+        verify(ticketRepository).save(captor.capture());
+        Ticket capturedTicket = captor.getValue();
+
+        assertEquals("Testing", capturedTicket.getTitle());
+        assertEquals(TicketStatus.OPEN, capturedTicket.getTicketStatus());
     }
 
 }

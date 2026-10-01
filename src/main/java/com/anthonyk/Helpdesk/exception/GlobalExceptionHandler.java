@@ -61,6 +61,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidTicketStatusTransitionException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidTicketStatusTransitionException(
+            InvalidTicketStatusTransitionException invalidTicketStatusTransitionException) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.CONFLICT.value(),
+                invalidTicketStatusTransitionException.getMessage());
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
     // Handle all other exceptions
 
     @ExceptionHandler(Exception.class)

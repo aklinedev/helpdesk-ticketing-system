@@ -25,7 +25,6 @@ public class UpdateTicketRequestDTOTest {
         validator = factory.getValidator();
     }
 
-
     @Test
     public void fullyValidDtoTest() {
 
