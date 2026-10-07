@@ -12,7 +12,9 @@ public record TicketResponseDTO(
         String description,
         TicketPriority ticketPriority,
         TicketStatus ticketStatus,
-        LocalDateTime createdAt
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt,
+        LocalDateTime resolvedAt
 
 ) {
 

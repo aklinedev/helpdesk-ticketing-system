@@ -21,6 +21,12 @@ public class Ticket {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
+
+    @Column
+    private LocalDateTime resolvedAt;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TicketPriority ticketPriority;
@@ -38,9 +44,22 @@ public class Ticket {
         this.ticketPriority = ticketPriority;
         this.ticketStatus = TicketStatus.OPEN;
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.resolvedAt = null;
     }
 
-    // Setters
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
+    public void markResolved() {
+        this.resolvedAt = LocalDateTime.now();
+    }
+
+    public void clearResolvedAt() {
+        this.resolvedAt = null;
+    }
 
     public void setTitle(String newTitle) {
         this.title = newTitle;
@@ -57,8 +76,6 @@ public class Ticket {
     public void setTicketStatus(TicketStatus newTicketStatus) {
         this.ticketStatus = newTicketStatus;
     }
-
-    // Getters
 
     public Long getId() {
         return this.id;
@@ -82,5 +99,13 @@ public class Ticket {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public LocalDateTime getResolvedAt() {
+        return resolvedAt;
     }
 }

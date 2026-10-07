@@ -53,8 +53,7 @@ public class TicketService {
 
         if (!isAllowed) {
             throw new InvalidTicketStatusTransitionException(
-                "Invalid ticket status transition request"
-            );
+                    "Invalid ticket status transition request");
         }
     }
 
@@ -85,8 +84,19 @@ public class TicketService {
 
         Ticket ticket = getTicketOrThrow(id);
 
-        if (ticketStatus != null ) { 
-            checkValidStatusTransition(ticket.getTicketStatus(), ticketStatus);
+        if (ticketStatus != null) {
+            
+            TicketStatus currentTicketStatus = ticket.getTicketStatus();
+
+            checkValidStatusTransition(currentTicketStatus, ticketStatus);
+
+            if (currentTicketStatus == TicketStatus.IN_PROGRESS && ticketStatus == TicketStatus.RESOLVED) {
+                ticket.markResolved();
+            }
+            if (currentTicketStatus == TicketStatus.RESOLVED && ticketStatus == TicketStatus.IN_PROGRESS) {
+                ticket.clearResolvedAt();
+            }
+
             ticket.setTicketStatus(ticketStatus);
         }
 

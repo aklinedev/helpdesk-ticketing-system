@@ -12,7 +12,9 @@ public class TicketMapper {
                 ticket.getDescription(),
                 ticket.getTicketPriority(),
                 ticket.getTicketStatus(),
-                ticket.getCreatedAt());
+                ticket.getCreatedAt(),
+                ticket.getUpdatedAt(),
+                ticket.getResolvedAt());
     }
 
 }

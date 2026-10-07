@@ -37,7 +37,8 @@ public class TicketController {
     @PostMapping
     public ResponseEntity<TicketResponseDTO> createTicket(
             @Valid @RequestBody CreateTicketRequestDTO createTicketRequestDTO) {
-        Ticket createdTicket = ticketService.createTicket(createTicketRequestDTO.title(),
+        Ticket createdTicket = ticketService.createTicket(
+                createTicketRequestDTO.title(),
                 createTicketRequestDTO.description(),
                 createTicketRequestDTO.ticketPriority());
         return new ResponseEntity<>(TicketMapper.mapToResponseDTO(createdTicket), HttpStatus.CREATED);

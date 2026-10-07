@@ -3,6 +3,7 @@ package com.anthonyk.Helpdesk.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
@@ -12,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -216,6 +218,57 @@ public class TicketServiceTest {
 
         assertEquals("Testing", capturedTicket.getTitle());
         assertEquals(TicketStatus.OPEN, capturedTicket.getTicketStatus());
+    }
+
+    @Test 
+    void updateTicket_shouldSetResolvedAt() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        ticket.setTicketStatus(TicketStatus.IN_PROGRESS);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        ticketService.updateTicket(id, null, null, null, TicketStatus.RESOLVED);
+        ArgumentCaptor<Ticket> captor = ArgumentCaptor.forClass(Ticket.class);
+        verify(ticketRepository).save(captor.capture());
+        Ticket capturedTicket = captor.getValue();
+
+        assertEquals(TicketStatus.RESOLVED, capturedTicket.getTicketStatus());
+        assertNotNull(capturedTicket.getResolvedAt());
+    }
+
+    @Test 
+    void updateTicket_shouldClearResolvedAt() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        ticket.setTicketStatus(TicketStatus.RESOLVED);
+        ticket.markResolved();
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        ticketService.updateTicket(id, null, null, null, TicketStatus.IN_PROGRESS);
+        ArgumentCaptor<Ticket> captor = ArgumentCaptor.forClass(Ticket.class);
+        verify(ticketRepository).save(captor.capture());
+        Ticket capturedTicket = captor.getValue();
+
+        assertEquals(TicketStatus.IN_PROGRESS, capturedTicket.getTicketStatus());
+        assertNull(capturedTicket.getResolvedAt());
+    }
+
+    @Test
+    void updateTicket_shouldNotChangeResolvedAtTime_WithSameStatusTransition() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        ticket.setTicketStatus(TicketStatus.RESOLVED);
+        ticket.markResolved();
+        LocalDateTime prevTime = ticket.getResolvedAt();
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        ticketService.updateTicket(id, null, null, null, TicketStatus.RESOLVED);
+        ArgumentCaptor<Ticket> captor = ArgumentCaptor.forClass(Ticket.class);
+        verify(ticketRepository).save(captor.capture());
+        Ticket capturedTicket = captor.getValue();
+
+        assertEquals(TicketStatus.RESOLVED, capturedTicket.getTicketStatus());
+        assertThat(capturedTicket.getResolvedAt()).isEqualTo(prevTime);
     }
 
 }
