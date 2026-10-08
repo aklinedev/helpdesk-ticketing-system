@@ -28,6 +28,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.anthonyk.Helpdesk.exception.InvalidTicketStatusTransitionException;
 import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
+import com.anthonyk.Helpdesk.exception.TicketImmutableException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
 import com.anthonyk.Helpdesk.model.Ticket;
 import com.anthonyk.Helpdesk.model.TicketPriority;
@@ -168,10 +169,9 @@ public class TicketServiceTest {
         when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
 
         assertThrows(InvalidTicketStatusTransitionException.class,
-            () -> {
-                ticketService.updateTicket(id, null, null, null, TicketStatus.CLOSED);
-            }
-        );
+                () -> {
+                    ticketService.updateTicket(id, null, null, null, TicketStatus.CLOSED);
+                });
         verify(ticketRepository, never()).save(any());
     }
 
@@ -220,7 +220,7 @@ public class TicketServiceTest {
         assertEquals(TicketStatus.OPEN, capturedTicket.getTicketStatus());
     }
 
-    @Test 
+    @Test
     void updateTicket_shouldSetResolvedAt() {
         Long id = 1L;
         Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
@@ -236,7 +236,7 @@ public class TicketServiceTest {
         assertNotNull(capturedTicket.getResolvedAt());
     }
 
-    @Test 
+    @Test
     void updateTicket_shouldClearResolvedAt() {
         Long id = 1L;
         Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
@@ -269,6 +269,43 @@ public class TicketServiceTest {
 
         assertEquals(TicketStatus.RESOLVED, capturedTicket.getTicketStatus());
         assertThat(capturedTicket.getResolvedAt()).isEqualTo(prevTime);
+    }
+
+    @Test 
+    void updateTicket_shouldThrowTicketImmutableException() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        ticket.markResolved();
+        ticket.setTicketStatus(TicketStatus.CLOSED);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        assertThrows(TicketImmutableException.class, 
+            () -> {ticketService.updateTicket(id, "newTitle", "newDescription", null, null);
+    });
+
+        verify(ticketRepository, never()).save(any());
+        assertEquals("Test", ticket.getTitle());
+        assertEquals("testing", ticket.getDescription());
+        assertEquals(TicketStatus.CLOSED, ticket.getTicketStatus());
+    }
+
+    @Test
+    void updateTicket_shouldRejectClosedTicketBeforeValidatingTransition() {
+        Long id = 1L;
+        Ticket ticket = new Ticket("Test", "testing", TicketPriority.LOW);
+        ticket.markResolved();
+        ticket.setTicketStatus(TicketStatus.CLOSED);
+        when(ticketRepository.findById(id)).thenReturn(Optional.of(ticket));
+
+        assertThrows(TicketImmutableException.class,
+                () -> {
+                    ticketService.updateTicket(id, "newTitle", "newDescription", null, TicketStatus.OPEN);
+                });
+
+        verify(ticketRepository, never()).save(any());
+        assertEquals("Test", ticket.getTitle());
+        assertEquals("testing", ticket.getDescription());
+        assertEquals(TicketStatus.CLOSED, ticket.getTicketStatus());
     }
 
 }

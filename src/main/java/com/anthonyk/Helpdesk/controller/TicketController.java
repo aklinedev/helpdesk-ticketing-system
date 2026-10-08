@@ -62,7 +62,7 @@ public class TicketController {
     }
 
     @PatchMapping("/{id}")
-    public TicketResponseDTO updateTicket(@PathVariable long id,
+    public TicketResponseDTO updateTicket(@PathVariable Long id,
             @Valid @RequestBody UpdateTicketRequestDTO updateTicketRequestDTO) {
 
         String title = updateTicketRequestDTO.title();

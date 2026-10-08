@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.anthonyk.Helpdesk.exception.InvalidTicketStatusTransitionException;
 import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
+import com.anthonyk.Helpdesk.exception.TicketImmutableException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
 import com.anthonyk.Helpdesk.model.Ticket;
 import com.anthonyk.Helpdesk.model.TicketPriority;
@@ -57,6 +58,14 @@ public class TicketService {
         }
     }
 
+    private void checkTicketIsModifiable(TicketStatus currentStatus) {
+        if (currentStatus == TicketStatus.CLOSED) {
+            throw new TicketImmutableException(
+                "Ticket is closed, unable to modify"
+            );
+        }
+    }
+
     // Create Ticket -----------------------------------------------
 
     public Ticket createTicket(String title, String description, TicketPriority priority) {
@@ -83,6 +92,7 @@ public class TicketService {
         }
 
         Ticket ticket = getTicketOrThrow(id);
+        checkTicketIsModifiable(ticket.getTicketStatus());
 
         if (ticketStatus != null) {
             
