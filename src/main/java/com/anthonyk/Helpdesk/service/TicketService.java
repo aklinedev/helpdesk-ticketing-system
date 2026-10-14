@@ -23,7 +23,7 @@ public class TicketService {
     public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
-
+    
     private static final EnumMap<TicketStatus, Set<TicketStatus>> ALLOWED_STATUS_TRANSITIONS = new EnumMap<>(
             TicketStatus.class);
 
@@ -44,7 +44,7 @@ public class TicketService {
 
     private Ticket getTicketOrThrow(long id) {
         return ticketRepository.findById(id)
-                .orElseThrow(() -> new TicketNotFoundException("Ticket Not Found"));
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found"));
     }
 
     private void checkValidStatusTransition(TicketStatus currentStatus, TicketStatus updateStatusRequest) {
