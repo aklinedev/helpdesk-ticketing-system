@@ -8,15 +8,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.anthonyk.Helpdesk.dto.ErrorResponseDTO;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     // Handle specific exception's
 
     @ExceptionHandler(InvalidTicketUpdateException.class)
-    public ResponseEntity<ErrorResponse> handleTicketUpdateException(
+    public ResponseEntity<ErrorResponseDTO> handleTicketUpdateException(
             InvalidTicketUpdateException invalidTicketUpdateException) {
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 invalidTicketUpdateException.getMessage());
 
@@ -24,9 +26,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TicketNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleTicketNotFoundException(
+    public ResponseEntity<ErrorResponseDTO> handleTicketNotFoundException(
             TicketNotFoundException ticketNotFoundException) {
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.NOT_FOUND.value(),
                 ticketNotFoundException.getMessage());
 
@@ -34,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+    public ResponseEntity<ErrorResponseDTO> handleValidationExceptions(
             MethodArgumentNotValidException methodArgumentNotValidException) {
 
         FieldError fieldError = methodArgumentNotValidException.getFieldError();
@@ -45,7 +47,7 @@ public class GlobalExceptionHandler {
             message = fieldError.getDefaultMessage();
         }
 
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 message);
 
@@ -53,8 +55,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidInput() {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDTO> handleInvalidInput() {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.BAD_REQUEST.value(),
                 "Request contains invalid or malformed data");
 
@@ -62,9 +64,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InvalidTicketStatusTransitionException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidTicketStatusTransitionException(
+    public ResponseEntity<ErrorResponseDTO> handleInvalidTicketStatusTransitionException(
             InvalidTicketStatusTransitionException invalidTicketStatusTransitionException) {
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.CONFLICT.value(),
                 invalidTicketStatusTransitionException.getMessage());
 
@@ -72,9 +74,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TicketImmutableException.class)
-    public ResponseEntity<ErrorResponse> handleTicketImmutableException(
+    public ResponseEntity<ErrorResponseDTO> handleTicketImmutableException(
             TicketImmutableException ticketImmutableException) {
-        ErrorResponse errorResponse = new ErrorResponse(
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.FORBIDDEN.value(),
                 ticketImmutableException.getMessage());
 
@@ -84,32 +86,14 @@ public class GlobalExceptionHandler {
     // Handle all other exceptions
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneralException() {
-        ErrorResponse errorResponse = new ErrorResponse(
+    public ResponseEntity<ErrorResponseDTO> handleGeneralException() {
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "An unexpected error occurred");
 
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // Format helper
 
-    public static class ErrorResponse {
-        private int status;
-        private String message;
-
-        public ErrorResponse(int status, String message) {
-            this.status = status;
-            this.message = message;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-    }
 
 }
