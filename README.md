@@ -18,7 +18,7 @@ This project is designed to simulate an IT support environment, allowing support
 - Jakarta Bean Validation
 - Springdoc OpenAPI / Swagger UI
 
-**Frontend (Planned)**
+**Frontend**
 - React
 - TypeScript
 
