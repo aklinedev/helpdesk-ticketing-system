@@ -23,7 +23,7 @@ public class TicketService {
     public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
     }
-    
+
     private static final EnumMap<TicketStatus, Set<TicketStatus>> ALLOWED_STATUS_TRANSITIONS = new EnumMap<>(
             TicketStatus.class);
 
@@ -61,8 +61,7 @@ public class TicketService {
     private void checkTicketIsModifiable(TicketStatus currentStatus) {
         if (currentStatus == TicketStatus.CLOSED) {
             throw new TicketImmutableException(
-                "Ticket is closed, unable to modify"
-            );
+                    "Ticket is closed, unable to modify");
         }
     }
 
@@ -95,7 +94,7 @@ public class TicketService {
         checkTicketIsModifiable(ticket.getTicketStatus());
 
         if (ticketStatus != null) {
-            
+
             TicketStatus currentTicketStatus = ticket.getTicketStatus();
 
             checkValidStatusTransition(currentTicketStatus, ticketStatus);
