@@ -15,6 +15,4 @@ interface Ticket {
 
 } 
 
-
-
 export type {Ticket, TicketPriority, TicketStatus}
