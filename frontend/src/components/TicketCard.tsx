@@ -1,8 +1,8 @@
-import type { Ticket } from "../types/Ticket";
+import type { Ticket } from "../types/ticket";
 
 interface TicketCardProps {
     ticket: Ticket
-}
+}  
 
 
 function TicketCard( {ticket}: TicketCardProps ){
