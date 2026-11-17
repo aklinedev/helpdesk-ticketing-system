@@ -2,21 +2,23 @@ import { useState } from "react"
 import { TICKET_PRIORITIES, TICKET_STATUSES, type Ticket, type TicketPriority, type TicketStatus } from "../types/ticket"
 import type { CreateTicketRequest } from "../types/requests/create-ticket"
 import type { UpdateTicketRequest } from "../types/requests/update-ticket"
+import { ApiError } from "../api/api-error"
 
 type CreateFormProps = {
     mode: "create"
     ticket?: never
+    onSubmit: (request: CreateTicketRequest) => Promise<void>
 }
 
 type UpdateFormProps = {
     mode: "update"
     ticket: Ticket
+    onSubmit: (request: UpdateTicketRequest) => Promise<void>
 }
 
 type TicketFormProps =
-        (CreateFormProps | UpdateFormProps) & {
-        onSubmit: (request: CreateTicketRequest | UpdateTicketRequest) => Promise<void>
-    }
+    | CreateFormProps
+    | UpdateFormProps
 
 export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
 
@@ -25,7 +27,11 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
     const [description, setDescription] = useState<string>(ticket?.description ?? "")
     const [ticketPriority, setTicketPriority] = useState<TicketPriority>(ticket?.ticketPriority ?? "LOW")
     const [ticketStatus, setTicketStatus] = useState<TicketStatus>(ticket?.ticketStatus ?? "OPEN")
-        
+    const [submitting, setSubmitting] = useState(false)
+
+    //async function helper(request: CreateTicketRequest | UpdateTicketRequest) {
+// helper funciton for try catch finally blocks
+    //}
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -48,7 +54,21 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
                 description: trimmedDescription,
                 ticketPriority
             }
-            await onSubmit(createTicketRequest)
+
+            setSubmitting(true)
+
+            try {
+                await onSubmit(createTicketRequest)
+            } catch (error) {
+                if (error instanceof ApiError) {
+                    setFormError(error.message)
+                } else {
+                    setFormError("An unexpected error occurred.")
+                }
+            } finally {
+                setSubmitting(false)
+            }
+            
         }
 
         else {
@@ -83,9 +103,19 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
                     return
                 }
 
-            
-            await onSubmit(updateTicketRequest)
-                
+            setSubmitting(true)
+
+            try {
+                await onSubmit(updateTicketRequest)
+            } catch (error) {
+                if (error instanceof ApiError) {
+                    setFormError(error.message)
+                } else { 
+                    setFormError("An unexpected error occurred.")
+                }
+            } finally {
+                setSubmitting(false)
+            }
             
         }
 
@@ -143,7 +173,8 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
                 )}
             </div>
 <br />
-            <button type="submit">
+            <button type="submit"
+            disabled={submitting}>
                 {mode === "create" ? "Create Ticket" : "Update Ticket"}
             </button>
 

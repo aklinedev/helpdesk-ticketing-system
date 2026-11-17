@@ -1,13 +1,22 @@
-import { useTickets } from "../hooks/use-tickets";
+import type { ApiError } from "../api/api-error";
+import type { Ticket } from "../types/ticket";
 import TicketCard from "./TicketCard";
 
-export function TicketList() {
-    const {tickets, loading, error} = useTickets()
+interface TicketListProps {
+    tickets: Ticket[]
+    loading: boolean
+    error: ApiError | null
+}
+export function TicketList({
+    tickets,
+    loading,
+    error
+}: TicketListProps) {
 
     if (loading == true ) {
         return (
             <h3>
-                Loading
+                Loading...
             </h3>
         );
     }

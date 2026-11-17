@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { Ticket } from "../types/ticket"
 import { ApiError } from "../api/api-error"
 import { getTickets } from "../api/tickets"
@@ -6,34 +6,32 @@ import { getTickets } from "../api/tickets"
 export function useTickets() {
 
     const [tickets, setTickets] = useState<Ticket[]>([])
-    const [loading, setLoading] = useState<boolean>(true)
+    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<ApiError | null>(null)
 
+        
+    async function loadTickets() {
+        try {
+            setLoading(true)
+            setError(null)
 
-        useEffect(() => {
-            async function loadTickets() {
-                try {
-                    setLoading(true)
-                    setError(null)
-
-                    const data = await getTickets()
-                    setTickets(data)
-                } catch (error) {
-                    if(error instanceof ApiError) {
-                        setError(error)
-                    } else {
-                        setError(new ApiError(0, "Unexpected error occurred."))
-                    }
-                } finally {
-                    setLoading(false)
-                }
+            const data = await getTickets()
+            setTickets(data)
+        } catch (error) {
+            if(error instanceof ApiError) {
+                setError(error)
+            } else {
+                setError(new ApiError(0, "Unexpected error occurred."))
             }
+        } finally {
+            setLoading(false)
+        }
+    }
 
-            loadTickets()
-        }, [])
     return {
         tickets,
         loading,
-        error
+        error,
+        loadTickets
     }
 }

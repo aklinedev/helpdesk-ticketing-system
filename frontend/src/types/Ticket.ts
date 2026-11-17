@@ -1,8 +1,11 @@
 
-type TicketPriority = "LOW" | "MEDIUM" | "HIGH" | "URGENT"
-type TicketStatus = "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED"
+export const TICKET_PRIORITIES = ["LOW",  "MEDIUM",  "HIGH", "URGENT" ] as const
+export const TICKET_STATUSES = ["OPEN",  "IN_PROGRESS",  "RESOLVED", "CLOSED" ] as const
 
-interface Ticket {
+export type TicketPriority = typeof TICKET_PRIORITIES[number]
+export type TicketStatus = typeof TICKET_STATUSES[number]
+
+export interface Ticket {
     id: number
     title: string
     description: string
@@ -13,6 +16,4 @@ interface Ticket {
     resolvedAt: string | null
 
 
-} 
-
-export type {Ticket, TicketPriority, TicketStatus}
+}

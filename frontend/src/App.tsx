@@ -1,16 +1,17 @@
-import { TicketList } from "./components/TicketList"
+import { TicketsPage } from "./pages/TicketPage"
 
 function App() {
-  return (
-    <>
-      <div>
-        <h1>Help Desk</h1>
-        <p>Ticket Management System</p>
+    return (
+        <>
+            <div>
+                <h1>Help Desk</h1>
+                <p>Ticket Management System</p>
+                <br />
 
-        <TicketList />
-      </div>
-    </>
-  )
+                <TicketsPage />
+            </div>
+        </>
+    )
 }
 
 export default App

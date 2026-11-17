@@ -28,7 +28,7 @@ export async function apiRequest<T>(path: string, options: RequestInit = {}): Pr
                 message = body.message
             }
         } catch {
-            // If parsing the error message failed (response body was not valid ErrorResponse JSON), we keep the fallback message created.
+            // If parsing the error message failed (response body was not valid ErrorResponse JSON), keep the fallback message created.
         }
         throw new ApiError(response.status, message)
     }
