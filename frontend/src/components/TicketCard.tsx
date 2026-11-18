@@ -3,9 +3,10 @@ import type { Ticket } from "../types/ticket";
 interface TicketCardProps {
     ticket: Ticket
     onEdit: (ticket: Ticket) => void
+    onDelete: (ticket: Ticket) => void
 }  
 
-function TicketCard( {ticket, onEdit}: TicketCardProps ){
+function TicketCard( {ticket, onEdit, onDelete}: TicketCardProps ){
 
     return(
         <header>
@@ -18,6 +19,9 @@ function TicketCard( {ticket, onEdit}: TicketCardProps ){
             <h2>Resolved: {ticket.resolvedAt}</h2>
             <button onClick={() => onEdit(ticket)}>
                 Edit
+            </button>
+            <button onClick={() => onDelete(ticket)}>
+                Delete
             </button>
         </header>
     );
