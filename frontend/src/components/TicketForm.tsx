@@ -23,6 +23,7 @@ type TicketFormProps =
 export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
 
     const [formError, setFormError] = useState<string | null>(null)
+    const [formSuccess, setFormSuccess] = useState<string | null>(null)
     const [title, setTitle] = useState<string>(ticket?.title ?? "")
     const [description, setDescription] = useState<string>(ticket?.description ?? "")
     const [ticketPriority, setTicketPriority] = useState<TicketPriority>(ticket?.ticketPriority ?? "LOW")
@@ -59,6 +60,10 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
 
             try {
                 await onSubmit(createTicketRequest)
+                setTitle("")
+                setDescription("")
+                setTicketPriority("LOW")
+                setFormSuccess("Ticket created successfully")
             } catch (error) {
                 if (error instanceof ApiError) {
                     setFormError(error.message)
@@ -107,6 +112,7 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
 
             try {
                 await onSubmit(updateTicketRequest)
+                setFormSuccess("Ticket updated successfully")
             } catch (error) {
                 if (error instanceof ApiError) {
                     setFormError(error.message)
@@ -182,7 +188,11 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
             {formError && (
                 <p>{formError}</p>
             )}
-            
+
+            {formSuccess && (
+                <p>{formSuccess}</p>
+            )}
+
         </form>
     )
 

@@ -8,13 +8,15 @@ export function useTickets() {
     const [tickets, setTickets] = useState<Ticket[]>([])
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<ApiError | null>(null)
+    const [hasLoaded, setHasLoaded] = useState<boolean>(false)
 
         
     async function loadTickets() {
         try {
             setLoading(true)
             setError(null)
-
+            setHasLoaded(true)
+            
             const data = await getTickets()
             setTickets(data)
         } catch (error) {
@@ -32,6 +34,7 @@ export function useTickets() {
         tickets,
         loading,
         error,
+        hasLoaded,
         loadTickets
     }
 }

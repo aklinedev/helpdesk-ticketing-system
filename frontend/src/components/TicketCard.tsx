@@ -2,10 +2,10 @@ import type { Ticket } from "../types/ticket";
 
 interface TicketCardProps {
     ticket: Ticket
+    onEdit: (ticket: Ticket) => void
 }  
 
-
-function TicketCard( {ticket}: TicketCardProps ){
+function TicketCard( {ticket, onEdit}: TicketCardProps ){
 
     return(
         <header>
@@ -16,6 +16,9 @@ function TicketCard( {ticket}: TicketCardProps ){
             <h2>Ticket created at {ticket.createdAt}</h2>
             <h2>Last updated: {ticket.updatedAt}</h2>
             <h2>Resolved: {ticket.resolvedAt}</h2>
+            <button onClick={() => onEdit(ticket)}>
+                Edit
+            </button>
         </header>
     );
 }

@@ -6,11 +6,13 @@ interface TicketListProps {
     tickets: Ticket[]
     loading: boolean
     error: ApiError | null
+    onEdit: (ticket: Ticket) => void
 }
 export function TicketList({
     tickets,
     loading,
-    error
+    error,
+    onEdit,
 }: TicketListProps) {
 
     if (loading == true ) {
@@ -42,6 +44,7 @@ export function TicketList({
             <TicketCard
                 key = {item.id}
                 ticket = {item}
+                onEdit={onEdit}
                 />
             ))}
     </div>
