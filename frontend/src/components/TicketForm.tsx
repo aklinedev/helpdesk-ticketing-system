@@ -37,6 +37,7 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         setFormError(null)
+        setFormSuccess(null)
 
         const trimmedTitle = title.trim()
         const trimmedDescription = description.trim()
