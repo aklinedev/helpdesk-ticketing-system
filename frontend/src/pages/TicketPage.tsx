@@ -13,7 +13,7 @@ export function TicketsPage() {
     const [editingTicket, setEditingTicket] = useState<Ticket | null> (null)
     const [curDeleteTicket, setCurDeleteTicket] = useState<Ticket | null> (null)
     const [deleteError, setDeleteError] = useState<string | null> (null)
-    
+
     const {
         tickets,
         loading,
@@ -24,6 +24,9 @@ export function TicketsPage() {
 
     async function handleCreate(request: CreateTicketRequest) {
         await createTicket(request)
+        if (hasLoaded) {
+            await loadTickets()
+        }
     }
 
     async function handleUpdate(request: UpdateTicketRequest) {
@@ -31,12 +34,18 @@ export function TicketsPage() {
             return
         }
         await updateTicket(editingTicket.id, request)
+        if (hasLoaded) {
+            await loadTickets()
+        }
         setEditingTicket(null)
     }
 
     async function handleDelete(ticket: Ticket) {
     try {
         await deleteTicket(ticket.id)
+        if (hasLoaded) {
+            await loadTickets()
+        }
         setCurDeleteTicket(null)
 
     } catch (error) {
