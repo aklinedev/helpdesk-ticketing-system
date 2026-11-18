@@ -1,16 +1,16 @@
+import "./App.css"
 import { TicketsPage } from "./pages/TicketPage"
 
 function App() {
     return (
-        <>
-            <div>
+        <main className="app">
+            <header className="app-header">
                 <h1>Help Desk</h1>
                 <p>Ticket Management System</p>
-                <br />
+            </header>
 
-                <TicketsPage />
-            </div>
-        </>
+            <TicketsPage />
+        </main>
     )
 }
 

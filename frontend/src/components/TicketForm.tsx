@@ -130,71 +130,90 @@ export function TicketForm({mode, ticket, onSubmit}: TicketFormProps) {
     }
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="inputTitle">Title</label>
-                <input
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
-                    id="inputTitle"
-                    type="text"
-                />
-<br />
+    <form className="ticket-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+            <label htmlFor="inputTitle">Title</label>
 
+            <input
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                id="inputTitle"
+                type="text"
+            />
+        </div>
 
-                <label htmlFor="inputDescription">Description</label>
-                <textarea
-                    value={description}
-                    onChange={(event) => setDescription(event.target.value)}
-                    id="inputDescription"
-                />
+        <div className="form-group">
+            <label htmlFor="inputDescription">Description</label>
 
+            <textarea
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                id="inputDescription"
+            />
+        </div>
 
-<br />
-                <label htmlFor="inputTicketPriority">Ticket Priority</label>
-                <select id="inputTicketPriority"
+        <div className="form-group">
+            <label htmlFor="inputTicketPriority">Ticket Priority</label>
+
+            <select
+                id="inputTicketPriority"
                 value={ticketPriority}
-                onChange={(event) => setTicketPriority(event.target.value as TicketPriority)}>
-                    {TICKET_PRIORITIES.map((option) => (
-                        <option key = {option} value = {option}>
+                onChange={(event) =>
+                    setTicketPriority(event.target.value as TicketPriority)
+                }
+            >
+                {TICKET_PRIORITIES.map((option) => (
+                    <option key={option} value={option}>
+                        {option}
+                    </option>
+                ))}
+            </select>
+        </div>
+
+        {mode === "update" && (
+            <div className="form-group">
+                <label htmlFor="inputTicketStatus">Ticket Status</label>
+
+                <select
+                    id="inputTicketStatus"
+                    value={ticketStatus}
+                    onChange={(event) =>
+                        setTicketStatus(event.target.value as TicketStatus)
+                    }
+                >
+                    {TICKET_STATUSES.map((option) => (
+                        <option key={option} value={option}>
                             {option}
                         </option>
                     ))}
                 </select>
-<br />
-
-
-                {mode === "update" && (
-                    <>
-                        <label htmlFor="inputTicketStatus">Ticket Status</label>
-                        <select id="inputTicketStatus"
-                        value={ticketStatus}
-                        onChange={(event) => setTicketStatus(event.target.value as TicketStatus)}>
-                            {TICKET_STATUSES.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                            ))}
-                        </select>
-                    </>
-                )}
             </div>
-<br />
-            <button type="submit"
-            disabled={submitting}>
-                {mode === "create" ? "Create Ticket" : "Update Ticket"}
-            </button>
+        )}
 
-            
-            {formError && (
-                <p>{formError}</p>
-            )}
+        <button
+            className="button button-primary"
+            type="submit"
+            disabled={submitting}
+        >
+            {submitting
+                ? "Saving..."
+                : mode === "create"
+                    ? "Create Ticket"
+                    : "Update Ticket"}
+        </button>
 
-            {formSuccess && (
-                <p>{formSuccess}</p>
-            )}
+        {formError && (
+            <p className="error-message">
+                {formError}
+            </p>
+        )}
 
-        </form>
-    )
+        {formSuccess && (
+            <p className="success-message">
+                {formSuccess}
+            </p>
+        )}
+    </form>
+)
 
 }

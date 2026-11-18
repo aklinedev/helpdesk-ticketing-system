@@ -6,25 +6,54 @@ interface TicketCardProps {
     onDelete: (ticket: Ticket) => void
 }  
 
-function TicketCard( {ticket, onEdit, onDelete}: TicketCardProps ){
+function TicketCard({ ticket, onEdit, onDelete }: TicketCardProps) {
+    return (
+        <article className="ticket-card">
+            <h2>
+                {ticket.title} — #{ticket.id}
+            </h2>
 
-    return(
-        <header>
-            <h1>{ticket.title} Id: {ticket.id}</h1>
-            <h2>Description: {ticket.description}</h2>
-            <h2>Priority: {ticket.ticketPriority}</h2>
-            <h2>Status: {ticket.ticketStatus}</h2>
-            <h2>Ticket created at {ticket.createdAt}</h2>
-            <h2>Last updated: {ticket.updatedAt}</h2>
-            <h2>Resolved: {ticket.resolvedAt}</h2>
-            <button onClick={() => onEdit(ticket)}>
-                Edit
-            </button>
-            <button onClick={() => onDelete(ticket)}>
-                Delete
-            </button>
-        </header>
-    );
+            <p>
+                <strong>Description:</strong> {ticket.description}
+            </p>
+
+            <p>
+                <strong>Priority:</strong> {ticket.ticketPriority}
+            </p>
+
+            <p>
+                <strong>Status:</strong> {ticket.ticketStatus}
+            </p>
+
+            <p>
+                <strong>Created:</strong> {ticket.createdAt}
+            </p>
+
+            <p>
+                <strong>Last Updated:</strong> {ticket.updatedAt}
+            </p>
+
+            <p>
+                <strong>Resolved:</strong> {ticket.resolvedAt ?? "-"}
+            </p>
+
+            <div className="ticket-card-actions">
+                <button
+                    className="button button-primary"
+                    onClick={() => onEdit(ticket)}
+                >
+                    Edit
+                </button>
+
+                <button
+                    className="button button-danger"
+                    onClick={() => onDelete(ticket)}
+                >
+                    Delete
+                </button>
+            </div>
+        </article>
+    )
 }
 
 export default TicketCard

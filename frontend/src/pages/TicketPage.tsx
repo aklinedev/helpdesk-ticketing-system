@@ -69,25 +69,34 @@ export function TicketsPage() {
     }
 
     return (
-        <>
+        <div className="tickets-page">
             <TicketForm
                 mode="create"
                 onSubmit={handleCreate}
             />
 
             {curDeleteTicket && (
-                <div>
-                    Delete ticket #{curDeleteTicket.id}?
-                    <button onClick={() => handleDelete(curDeleteTicket)}>
-                    Confirm
-                    </button>
-                    <button
-                        onClick={() => {
-                            setCurDeleteTicket(null) 
-                            setDeleteError(null)
-                        }}>
-                        Cancel
-                    </button>
+                <div className="delete-confirmation">
+                    <p>Delete ticket #{curDeleteTicket.id}?</p>
+
+                    <div className="delete-confirmation-actions">
+                        <button
+                            className="button button-danger"
+                            onClick={() => handleDelete(curDeleteTicket)}
+                        >
+                            Confirm
+                        </button>
+
+                        <button
+                            className="button button-secondary"
+                            onClick={() => {
+                                setCurDeleteTicket(null)
+                                setDeleteError(null)
+                            }}
+                        >
+                            Cancel
+                        </button>
+                    </div>
                 </div>
             )}
             
@@ -99,12 +108,15 @@ export function TicketsPage() {
                 onSubmit={handleUpdate}
                 /> )}
 
-            <button onClick={loadTickets}>
+            <button
+                className="button button-secondary"
+                onClick={loadTickets}
+            >
                 {hasLoaded ? "Refresh Tickets" : "Get All Tickets"}
             </button>
 
             {deleteError && (
-                <p>{deleteError}</p>
+                <p className="error-message">{deleteError}</p>
             )}
             
             {(hasLoaded || loading || error) && (
@@ -115,6 +127,6 @@ export function TicketsPage() {
                 onEdit={handleEdit}
                 onDelete={handleDeleteValue}
             /> )}
-        </>
+        </div>
     )
 }

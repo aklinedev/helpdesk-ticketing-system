@@ -27,10 +27,10 @@ export function TicketList({
 
     if (error != null) {
        return (
-        <header>
+        <p className="error-message">
             <h2>Error Status: {error.status}</h2>
             <h2>{error.message}</h2>
-        </header>
+        </p>
        );
     }
 
@@ -41,7 +41,7 @@ export function TicketList({
     }
 
     return ( 
-    <div>
+    <div className="ticket-list">
         {tickets.map((item) => (
             <TicketCard
                 key = {item.id}
