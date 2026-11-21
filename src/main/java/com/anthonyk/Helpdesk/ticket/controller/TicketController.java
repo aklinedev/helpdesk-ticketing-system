@@ -1,4 +1,4 @@
-package com.anthonyk.Helpdesk.controller;
+package com.anthonyk.Helpdesk.ticket.controller;
 
 import java.util.List;
 
@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.anthonyk.Helpdesk.dto.UpdateTicketRequestDTO;
 import com.anthonyk.Helpdesk.docs.ApiBadRequest;
 import com.anthonyk.Helpdesk.docs.ApiConflict;
 import com.anthonyk.Helpdesk.docs.ApiForbidden;
 import com.anthonyk.Helpdesk.docs.ApiNotFound;
 import com.anthonyk.Helpdesk.docs.ApiServerError;
-import com.anthonyk.Helpdesk.dto.CreateTicketRequestDTO;
-import com.anthonyk.Helpdesk.dto.TicketResponseDTO;
-import com.anthonyk.Helpdesk.mapper.TicketMapper;
-import com.anthonyk.Helpdesk.model.Ticket;
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
-import com.anthonyk.Helpdesk.service.TicketService;
+import com.anthonyk.Helpdesk.ticket.dto.CreateTicketRequestDTO;
+import com.anthonyk.Helpdesk.ticket.dto.TicketResponseDTO;
+import com.anthonyk.Helpdesk.ticket.dto.UpdateTicketRequestDTO;
+import com.anthonyk.Helpdesk.ticket.mapper.TicketMapper;
+import com.anthonyk.Helpdesk.ticket.model.Ticket;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.service.TicketService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

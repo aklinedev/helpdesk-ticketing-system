@@ -1,13 +1,14 @@
-package com.anthonyk.Helpdesk.mapper;
+package com.anthonyk.Helpdesk.ticket.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.anthonyk.Helpdesk.dto.TicketResponseDTO;
-import com.anthonyk.Helpdesk.model.Ticket;
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.dto.TicketResponseDTO;
+import com.anthonyk.Helpdesk.ticket.mapper.TicketMapper;
+import com.anthonyk.Helpdesk.ticket.model.Ticket;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
 
 public class TicketMapperTest {
 

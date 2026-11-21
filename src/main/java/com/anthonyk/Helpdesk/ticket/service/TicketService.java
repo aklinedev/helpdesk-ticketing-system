@@ -1,4 +1,4 @@
-package com.anthonyk.Helpdesk.service;
+package com.anthonyk.Helpdesk.ticket.service;
 
 import java.util.EnumMap;
 import java.util.List;
@@ -10,10 +10,10 @@ import com.anthonyk.Helpdesk.exception.InvalidTicketStatusTransitionException;
 import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
 import com.anthonyk.Helpdesk.exception.TicketImmutableException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
-import com.anthonyk.Helpdesk.model.Ticket;
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
-import com.anthonyk.Helpdesk.repository.TicketRepository;
+import com.anthonyk.Helpdesk.ticket.model.Ticket;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.repository.TicketRepository;
 
 @Service
 public class TicketService {

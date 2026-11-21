@@ -1,4 +1,4 @@
-package com.anthonyk.Helpdesk.controller;
+package com.anthonyk.Helpdesk.ticket.controller;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -24,16 +24,17 @@ import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.anthonyk.Helpdesk.dto.CreateTicketRequestDTO;
-import com.anthonyk.Helpdesk.dto.UpdateTicketRequestDTO;
 import com.anthonyk.Helpdesk.exception.InvalidTicketStatusTransitionException;
 import com.anthonyk.Helpdesk.exception.InvalidTicketUpdateException;
 import com.anthonyk.Helpdesk.exception.TicketImmutableException;
 import com.anthonyk.Helpdesk.exception.TicketNotFoundException;
-import com.anthonyk.Helpdesk.model.Ticket;
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
-import com.anthonyk.Helpdesk.service.TicketService;
+import com.anthonyk.Helpdesk.ticket.controller.TicketController;
+import com.anthonyk.Helpdesk.ticket.dto.CreateTicketRequestDTO;
+import com.anthonyk.Helpdesk.ticket.dto.UpdateTicketRequestDTO;
+import com.anthonyk.Helpdesk.ticket.model.Ticket;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.service.TicketService;
 
 import tools.jackson.databind.ObjectMapper;
 

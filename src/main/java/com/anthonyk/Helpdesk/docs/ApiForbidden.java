@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.anthonyk.Helpdesk.dto.ErrorResponseDTO;
+import com.anthonyk.Helpdesk.ticket.dto.ErrorResponseDTO;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

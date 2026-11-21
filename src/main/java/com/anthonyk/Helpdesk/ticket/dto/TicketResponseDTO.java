@@ -1,9 +1,9 @@
-package com.anthonyk.Helpdesk.dto;
+package com.anthonyk.Helpdesk.ticket.dto;
 
 import java.time.LocalDateTime;
 
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
 
 public record TicketResponseDTO(
 

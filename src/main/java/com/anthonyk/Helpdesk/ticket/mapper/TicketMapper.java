@@ -1,7 +1,7 @@
-package com.anthonyk.Helpdesk.mapper;
+package com.anthonyk.Helpdesk.ticket.mapper;
 
-import com.anthonyk.Helpdesk.dto.TicketResponseDTO;
-import com.anthonyk.Helpdesk.model.Ticket;
+import com.anthonyk.Helpdesk.ticket.dto.TicketResponseDTO;
+import com.anthonyk.Helpdesk.ticket.model.Ticket;
 
 public class TicketMapper {
 

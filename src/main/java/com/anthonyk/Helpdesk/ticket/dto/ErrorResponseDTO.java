@@ -1,4 +1,4 @@
-package com.anthonyk.Helpdesk.dto;
+package com.anthonyk.Helpdesk.ticket.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

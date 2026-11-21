@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.anthonyk.Helpdesk.dto.ErrorResponseDTO;
+import com.anthonyk.Helpdesk.ticket.dto.ErrorResponseDTO;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

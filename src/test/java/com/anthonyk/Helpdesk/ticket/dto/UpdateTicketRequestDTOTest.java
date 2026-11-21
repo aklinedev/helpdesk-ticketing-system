@@ -1,4 +1,4 @@
-package com.anthonyk.Helpdesk.dto;
+package com.anthonyk.Helpdesk.ticket.dto;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,8 +7,9 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.dto.UpdateTicketRequestDTO;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;

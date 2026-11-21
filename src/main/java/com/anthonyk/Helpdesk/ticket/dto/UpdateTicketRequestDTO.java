@@ -1,7 +1,7 @@
-package com.anthonyk.Helpdesk.dto;
+package com.anthonyk.Helpdesk.ticket.dto;
 
-import com.anthonyk.Helpdesk.model.TicketPriority;
-import com.anthonyk.Helpdesk.model.TicketStatus;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketStatus;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

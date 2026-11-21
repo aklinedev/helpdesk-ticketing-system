@@ -1,6 +1,6 @@
-package com.anthonyk.Helpdesk.dto;
+package com.anthonyk.Helpdesk.ticket.dto;
 
-import com.anthonyk.Helpdesk.model.TicketPriority;
+import com.anthonyk.Helpdesk.ticket.model.TicketPriority;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
